@@ -21,6 +21,11 @@ spring:
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
     validationQuery: SELECT 1 FROM DUAL
+  # Nacos相关配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 # Nacos服务端地址
 
 mybatis-plus:
   type-aliases-package: com.api.enties
