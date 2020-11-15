@@ -1,0 +1,43 @@
+server:
+  port: 7111
+  servlet:
+    context-path: /article
+
+spring:
+  application:
+    name: article-server
+  # 数据库相关
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/blog-article?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    #mysql8版本以上驱动包指定新的驱动类
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    #   数据源其他配置, 在 DruidConfig配置类中手动绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+
+mybatis-plus:
+  type-aliases-package: com.api.enties
+  # xxxMapper.xml 路径
+  mapper-locations: classpath*:com/wang/article/dao/**/*.xml
+  global-config:
+    db-config:
+      # 全局id，不带“-”的UUID
+      id-type: assign_uuid
+
+# 日志级别，会打印sql语句
+#logging:
+#  level:
+#    com.wang.article.dao: debug
+
+# swagger相关
+swagger:
+  # 排除error请求路径
+  exclude-path: /error
+  title: SpringCloud学习接口文档

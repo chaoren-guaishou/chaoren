@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.article.dao.LabelMapper">
+
+    <sql id="LABEL_RESULT">
+        label.id id,
+        label.category_id categoryId,
+        label.name name,
+        label.created_time createdTime,
+        label.updated_time updatedTime
+    </sql>
+
+    <select id="pageLabel" resultType="com.wang.article.dto.response.LabelRES">
+        SELECT
+            <include refid="LABEL_RESULT"/>,
+            category.name categoryName
+        FROM
+            label
+        JOIN category ON category.id = label.category_id
+        WHERE
+            1 = 1
+            <if test="labelREQ.categoryId != null and labelREQ.categoryId != ''">
+                AND label.categoryId like CONCAT(#{labelREQ.categoryId}, '%')
+            </if>
+        <if test="labelREQ.name != null and labelREQ.name != ''">
+            AND label.name like CONCAT(#{labelREQ.name}, '%')
+        </if>
+        ORDER BY label.updated_time DESC
+    </select>
+</mapper>

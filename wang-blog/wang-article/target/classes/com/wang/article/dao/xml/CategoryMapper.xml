@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.article.dao.CategoryMapper">
+
+    <resultMap id="CATEGORY_WITH_LABEL" type="com.wang.article.dto.response.CategoryWithLabelRES">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <collection property="labelList" javaType="list" ofType="com.wang.article.dto.po.Label" >
+            <id column="id" property="id" />
+            <result column="name" property="name" />
+        </collection>
+    </resultMap>
+
+    <select id="selectNormalWithLabel" resultType="com.wang.article.dto.response.CategoryWithLabelRES">
+        SELECT
+            category.id,
+            category.name,
+            label.id,
+            label.name
+        FROM
+            category
+        LEFT JOIN label ON label.category_id = category.id
+        WHERE category.status = 1
+    </select>
+</mapper>

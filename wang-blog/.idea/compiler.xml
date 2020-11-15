@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="wang-until" />
+        <module name="wang-article" />
+        <module name="wang-generator" />
+        <module name="wang-api" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="wang-api" options="-parameters" />
+      <module name="wang-article" options="-parameters" />
+      <module name="wang-generator" options="-parameters" />
+      <module name="wang-until" options="-parameters" />
+    </option>
+  </component>
+</project>
