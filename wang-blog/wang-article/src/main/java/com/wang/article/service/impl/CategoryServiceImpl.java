@@ -13,6 +13,8 @@ import com.wang.until.base.BaseResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 分类service实现类
  *
@@ -46,7 +48,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public BaseResult searchNormalWithLabel() {
-        CategoryWithLabelRES categoryWithLabelRES = this.baseMapper.selectNormalWithLabel();
-        return null;
+        List<CategoryWithLabelRES> categoryWithLabelRESList = this.baseMapper.selectNormalWithLabel();
+        return BaseResult.success(categoryWithLabelRESList);
     }
 }

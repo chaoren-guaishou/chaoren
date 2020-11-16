@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/wang-api/pom.xml" />
         <option value="$PROJECT_DIR$/wang-until/pom.xml" />
         <option value="$PROJECT_DIR$/wang-generator/pom.xml" />
+        <option value="$PROJECT_DIR$/wang-question/pom.xml" />
       </list>
     </option>
   </component>

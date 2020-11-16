@@ -1,14 +1,14 @@
 package com.wang.article.dto.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -20,13 +20,10 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("article")
 @ApiModel(value="Article对象", description="文章信息表")
 public class Article implements Serializable {
 
-
     @ApiModelProperty(value = "主键")
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
     @ApiModelProperty(value = "发布者用户id")
@@ -57,19 +54,20 @@ public class Article implements Serializable {
     private Integer viewCount;
 
     @ApiModelProperty(value = "点赞数")
-    private Integer thumhup;
+    private Integer approvalCount;
 
     @ApiModelProperty(value = "0: 已删除, 1:未审核，2:审核通过，3：审核未通过")
     private Integer status;
 
     @ApiModelProperty(value = "0：不公开，1：公开")
-    private Integer ispublic;
+    private Integer isPublic;
 
     @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date createdTime;
 
     @ApiModelProperty(value = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updatedTime;
-
 
 }

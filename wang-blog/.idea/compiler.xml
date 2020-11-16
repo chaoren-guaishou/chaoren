@@ -9,6 +9,7 @@
         <module name="wang-until" />
         <module name="wang-article" />
         <module name="wang-generator" />
+        <module name="wang-question" />
         <module name="wang-api" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="wang-api" options="-parameters" />
       <module name="wang-article" options="-parameters" />
       <module name="wang-generator" options="-parameters" />
+      <module name="wang-question" options="-parameters" />
       <module name="wang-until" options="-parameters" />
     </option>
   </component>

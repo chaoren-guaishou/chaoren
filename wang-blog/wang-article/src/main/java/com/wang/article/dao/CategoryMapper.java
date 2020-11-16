@@ -4,6 +4,8 @@ import com.api.entities.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wang.article.dto.response.CategoryWithLabelRES;
 
+import java.util.List;
+
 /**
  * 分类dao
  *
@@ -20,5 +22,5 @@ public interface CategoryMapper extends BaseMapper<Category> {
      *
      * @return 所有数据正常的分类信息(带标签)
      */
-    CategoryWithLabelRES selectNormalWithLabel();
+    List<CategoryWithLabelRES> selectNormalWithLabel();
 }
