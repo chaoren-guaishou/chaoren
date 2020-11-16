@@ -1,0 +1,4 @@
+# 数据库相关
+DB_URL: 192.168.0.189
+DB_USER_NAME: root
+DB_PASSWORD: camp3.0
