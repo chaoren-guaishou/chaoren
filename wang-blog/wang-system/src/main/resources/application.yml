@@ -1,0 +1,30 @@
+server:
+  port: 7113
+  servlet:
+    context-path: /system
+
+spring:
+  application:
+    name: system-server
+  profiles:
+    active: local,db
+  # Nacos相关配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 # Nacos服务端地址
+
+mybatis-plus:
+  type-aliases-package: com.api.enties
+  # xxxMapper.xml 路径
+  mapper-locations: classpath*:com/wang/system/dao/**/*.xml
+  global-config:
+    db-config:
+      # 全局id，不带“-”的UUID
+      id-type: assign_uuid
+
+# swagger相关
+swagger:
+  # 排除error请求路径
+  exclude-path: /error
+  title: SpringCloud学习接口文档

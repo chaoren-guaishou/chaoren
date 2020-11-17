@@ -18,16 +18,16 @@ import java.util.Scanner;
 public class CodeGenerator {
 
     // 生成的代码放到哪个工程中
-    private static final String PROJECT_NAME = "wang-article";
+    private static final String PROJECT_NAME = "wang-system";
 
     // 数据库名称
-    private static final String DATABASE_NAME = "blog-article";
+    private static final String DATABASE_NAME = "blog-system";
 
     // 父包名
     private static final String PARENT_MODULE_NAME = "com.wang";
 
     // 子包名
-    private static final String MODULE_NAME = "article";
+    private static final String MODULE_NAME = "system";
 
     public static void main(String[] args) {
         // 代码生成器
@@ -50,7 +50,7 @@ public class CodeGenerator {
         gc.setFileOverride(true); // 覆盖现有的
         gc.setOpen(false); // 是否生成后打开
         gc.setDateType(DateType.ONLY_DATE);
-        gc.setSwagger2(false); //实体属性 Swagger2 注解
+        gc.setSwagger2(true); //实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
         // 包配置

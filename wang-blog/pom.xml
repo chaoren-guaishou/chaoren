@@ -12,6 +12,8 @@
         <module>wang-api</module>
         <module>wang-article</module>
         <module>wang-question</module>
+        <module>wang-system</module>
+        <module>wang-oauth2</module>
         <module>wang-generator</module>
     </modules>
     <packaging>pom</packaging>
