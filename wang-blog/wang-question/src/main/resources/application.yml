@@ -1,5 +1,5 @@
 server:
-  port: 7111
+  port: 7112
   servlet:
     context-path: /question
 
@@ -8,23 +8,23 @@ spring:
     name: question-server
   profiles:
     active: local,db
-  # NacosÏà¹ØÅäÖÃ
+  # Nacosç›¸å…³é…ç½®
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848 # Nacos·şÎñ¶ËµØÖ·
+        server-addr: 127.0.0.1:8848 # NacosæœåŠ¡ç«¯åœ°å€
 
 mybatis-plus:
   type-aliases-package: com.api.enties
-  # xxxMapper.xml Â·¾¶
+  # xxxMapper.xml è·¯å¾„
   mapper-locations: classpath*:com/wang/question/dao/**/*.xml
   global-config:
     db-config:
-      # È«¾Öid£¬²»´ø¡°-¡±µÄUUID
+      # å…¨å±€idï¼Œä¸å¸¦â€œ-â€çš„UUID
       id-type: assign_uuid
 
-# swaggerÏà¹Ø
+# swaggerç›¸å…³
 swagger:
-  # ÅÅ³ıerrorÇëÇóÂ·¾¶
+  # æ’é™¤errorè¯·æ±‚è·¯å¾„
   exclude-path: /error
-  title: SpringCloudÑ§Ï°½Ó¿ÚÎÄµµ
+  title: SpringCloudå­¦ä¹ æ¥å£æ–‡æ¡£
