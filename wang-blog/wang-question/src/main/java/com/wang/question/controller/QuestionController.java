@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  * 问题表 API
@@ -22,11 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class QuestionController {
 
-    private final ICategoryFeign categoryFeign;
-
-    public QuestionController(ICategoryFeign categoryFeign) {
-        this.categoryFeign = categoryFeign;
-    }
+    @Resource
+    private ICategoryFeign categoryFeign;
 
     @GetMapping("test")
     public BaseResult test() {
