@@ -1,7 +1,7 @@
 server:
   port: 7114
   servlet:
-    context-path: /oauth2
+    context-path: /auth
 
 spring:
   application:

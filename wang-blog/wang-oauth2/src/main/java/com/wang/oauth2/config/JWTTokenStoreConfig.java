@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 
 /**
  * <p>
- * 令牌管理配置类
+ * 令牌管理配置类，token管理
  * </p>
  *
  * @author DPJ

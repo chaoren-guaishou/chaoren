@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * <p>
- * UserDetailServiceImpl
+ * UserDetailServiceImpl  加载用户
  * </p>
  *
  * @author DPJ
