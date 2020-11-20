@@ -30,6 +30,13 @@ public class JWTTokenStoreConfig {
         return converter;
     }
 
+    /**
+     * <p>
+     * token的管理方式：基于JWT
+     * </p>
+     *
+     * @return JWT管理token
+     */
     @Bean
     public TokenStore tokenStore() {
         // Jwt管理令牌

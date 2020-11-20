@@ -1,5 +1,6 @@
 package com.wang.oauth2.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,7 @@ import javax.sql.DataSource;
  * @author DPJ
  * @since 2020/11/19
  */
+@Slf4j
 @Configuration
 @EnableAuthorizationServer // 开启了授权服务器
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -32,6 +34,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     /** 数据源 */
     @Resource
     private DataSource dataSource;
+
+    /** 认证异常处理 */
+    @Resource
+    private SecurityResponseExceptionTranslator securityResponseExceptionTranslator;
 
     /**
      * 认证管理器->在SpringSecurityConfig中注入到SpringIOC容器中
@@ -78,6 +84,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 读取客户端配置
         clients.withClientDetails(jdbcClientDetailsService());
+        log.info("读取客户端配置成功。。。。。。。。。。。。。。。。");
     }
 
     /**
@@ -93,7 +100,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager) // 认证管理器  password模式需要
                 .userDetailsService(userDetailsService) // 刷新令牌时需要
                 .tokenStore(tokenStore) // 令牌(token)的管理方式
-                .accessTokenConverter(jwtAccessTokenConverter);
+                .accessTokenConverter(jwtAccessTokenConverter)
+                .exceptionTranslator(securityResponseExceptionTranslator);
     }
 
     @Override

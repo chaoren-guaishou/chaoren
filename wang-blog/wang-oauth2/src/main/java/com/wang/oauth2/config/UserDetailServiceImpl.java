@@ -5,11 +5,11 @@ import com.api.entities.SysMenuVO;
 import com.api.entities.SysUserVO;
 import com.api.feign.ISysFeign;
 import com.wang.oauth2.po.JWTUser;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,13 +27,14 @@ import java.util.List;
  * @since 2020/11/18
  */
 @Service
+@Slf4j
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Resource
     private ISysFeign iSysFeign;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public JWTUser loadUserByUsername(String username) throws UsernameNotFoundException {
         // 1.校验用户名
         if (StringUtils.isBlank(username)) {
             throw new BadCredentialsException("用户名不能为空！");
@@ -44,6 +45,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (null == sysUserVO) {
             throw new BadCredentialsException("用户名或密码错误！");
         }
+        log.info("==================用户信息获取成功,用户密码==========={}", sysUserVO.getPassword());
 
         // 3.获取用户所拥有的角色
         List<SysMenuVO> sysMenuVOS = iSysFeign.listMenu(sysUserVO.getId());
@@ -52,14 +54,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
             sysMenuVOS.forEach(e ->
                     authorities.add(new SimpleGrantedAuthority(e.getCode())));
         }
+
         return new JWTUser(
                 sysUserVO.getId(), sysUserVO.getUsername(),
-                sysUserVO.getPassword(), sysUserVO.getIsAccountNonExpired(),
-                sysUserVO.getIsAccountNonLocked(), sysUserVO.getIsCredentialsNonExpired(),
-                sysUserVO.getIsEnabled(), sysUserVO.getNickName(),
+                sysUserVO.getPassword(), sysUserVO.getNickName(),
                 sysUserVO.getImageUrl(), sysUserVO.getMobile(),
-                sysUserVO.getEmail(), sysUserVO.getCreatedTime(),
-                sysUserVO.getUpdatedTime(), sysUserVO.getPwdUpdatedTime(),
-                authorities);
+                sysUserVO.getEmail(), sysUserVO.getIsAccountNonExpired(),
+                sysUserVO.getIsAccountNonLocked(), sysUserVO.getIsCredentialsNonExpired(),
+                sysUserVO.getIsEnabled(), authorities);
     }
 }
