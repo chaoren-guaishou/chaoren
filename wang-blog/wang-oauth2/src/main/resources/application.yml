@@ -13,6 +13,12 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848 # Nacos服务端地址
+  # Redis相关配置
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_POST:6379}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DATABASE:0}
 
 mybatis-plus:
   type-aliases-package: com.api.enties

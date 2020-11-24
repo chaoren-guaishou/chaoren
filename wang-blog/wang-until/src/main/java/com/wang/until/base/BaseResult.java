@@ -60,5 +60,9 @@ public class BaseResult implements Serializable {
         return new BaseResult(ResultEnum.FAILURE.getCode(), message, null);
     }
 
+    public static BaseResult failure(Integer code, String message) {
+        return new BaseResult(code, message, null);
+    }
+
 
 }

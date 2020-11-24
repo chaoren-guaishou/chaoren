@@ -1,5 +1,7 @@
 package com.wang.oauth2.config;
 
+import com.wang.oauth2.handler.CustomAuthenticationFailureHandler;
+import com.wang.oauth2.handler.CustomAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +24,14 @@ import javax.annotation.Resource;
  */
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    /** 自定义登陆成功处理器 */
+    @Resource(name = "customAuthenticationSuccessHandler")
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    /** 自定义登陆成功处理器 */
+    @Resource(name = "customAuthenticationFailureHandler")
+    private CustomAuthenticationFailureHandler authenticationFailureHandler;
 
     @Resource(name = "userDetailServiceImpl")
     private UserDetailsService userDetailsService;
@@ -57,7 +67,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 关闭csrf攻击
-        http.csrf().disable();
+        http.formLogin() // 配置表单登陆
+                .successHandler(authenticationSuccessHandler) // 成功处理器
+                .failureHandler(authenticationFailureHandler) // 失败处理器
+            .and().csrf().disable(); // 关闭csrf攻击
     }
 }

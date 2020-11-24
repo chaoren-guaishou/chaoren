@@ -12,11 +12,15 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -31,13 +35,11 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer // 开启了授权服务器
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    /** 数据源 */
+    /**
+     * 数据源
+     */
     @Resource
     private DataSource dataSource;
-
-    /** 认证异常处理 */
-    @Resource
-    private SecurityResponseExceptionTranslator securityResponseExceptionTranslator;
 
     /**
      * 认证管理器->在SpringSecurityConfig中注入到SpringIOC容器中
@@ -59,8 +61,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Resource
     private TokenStore tokenStore;
 
-    /** JWT转换器 */
-    @Resource
+    /**
+     * 令牌增强
+     * 用于添加扩展信息，如用户信息等
+     */
+    @Resource(name = "jwtTokenEnhancer")
+    private TokenEnhancer tokenEnhancer;
+
+    /**
+     * JWT转换器
+     */
+    @Resource(name = "jwtAccessTokenConverter")
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     /**
@@ -99,9 +110,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .authenticationManager(authenticationManager) // 认证管理器  password模式需要
                 .userDetailsService(userDetailsService) // 刷新令牌时需要
-                .tokenStore(tokenStore) // 令牌(token)的管理方式
-                .accessTokenConverter(jwtAccessTokenConverter)
-                .exceptionTranslator(securityResponseExceptionTranslator);
+                .tokenStore(tokenStore).accessTokenConverter(jwtAccessTokenConverter); // 令牌(token)的管理方式
+
+
+        // 添加令牌增强配置
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        List<TokenEnhancer> tokenEnhancerList = new ArrayList<>();
+        tokenEnhancerList.add(tokenEnhancer);
+        tokenEnhancerList.add(jwtAccessTokenConverter);
+        enhancerChain.setTokenEnhancers(tokenEnhancerList);
+
+        endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter); // 令牌增强器
     }
 
     @Override
