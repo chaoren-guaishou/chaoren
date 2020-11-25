@@ -1,6 +1,7 @@
 package com.wang.oauth2.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,17 +43,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private DataSource dataSource;
 
     /**
-     * 认证管理器->在SpringSecurityConfig中注入到SpringIOC容器中
-     * 用来支持password模式
-     */
-    @Resource
-    private AuthenticationManager authenticationManager;
-
-    /**
      * 用户信息加载类
      * 用来支持刷新token
      */
-    @Resource(name = "userDetailServiceImpl")
+    @Resource(name = "userDetailServiceConfig")
     private UserDetailsService userDetailsService;
 
     /**
@@ -87,6 +81,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
+     * 认证管理器->在SpringSecurityConfig中注入到SpringIOC容器中
+     * 用来支持password模式
+     */
+    @Resource
+    private AuthenticationManager authenticationManager;
+
+    /**
      * <p>
      * <-2->配置被允许访问此授权服务器的客户端信息->数据库方式
      * </p>
@@ -107,12 +108,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .authenticationManager(authenticationManager) // 认证管理器  password模式需要
-                .userDetailsService(userDetailsService) // 刷新令牌时需要
-                .tokenStore(tokenStore).accessTokenConverter(jwtAccessTokenConverter); // 令牌(token)的管理方式
-
-
         // 添加令牌增强配置
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         List<TokenEnhancer> tokenEnhancerList = new ArrayList<>();
@@ -120,7 +115,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenEnhancerList.add(jwtAccessTokenConverter);
         enhancerChain.setTokenEnhancers(tokenEnhancerList);
 
-        endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter); // 令牌增强器
+        endpoints
+                .authenticationManager(authenticationManager) // 认证管理器  password模式需要
+                .userDetailsService(userDetailsService) // 刷新令牌时需要
+                .tokenStore(tokenStore).accessTokenConverter(jwtAccessTokenConverter) // 令牌(token)的管理方式
+                .tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter); // 令牌增强器
     }
 
     @Override

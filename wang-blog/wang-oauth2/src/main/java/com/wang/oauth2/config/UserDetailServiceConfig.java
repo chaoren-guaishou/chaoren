@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailServiceConfig implements UserDetailsService {
 
     @Resource
     private ISysFeign iSysFeign;

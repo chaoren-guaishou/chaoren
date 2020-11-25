@@ -2,6 +2,7 @@ package com.wang.oauth2.config;
 
 import com.wang.oauth2.handler.CustomAuthenticationFailureHandler;
 import com.wang.oauth2.handler.CustomAuthenticationSuccessHandler;
+import com.wang.oauth2.handler.CustomLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,14 +27,19 @@ import javax.annotation.Resource;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /** 自定义登陆成功处理器 */
-    @Resource(name = "customAuthenticationSuccessHandler")
+    @Resource
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     /** 自定义登陆成功处理器 */
-    @Resource(name = "customAuthenticationFailureHandler")
+    @Resource
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
 
-    @Resource(name = "userDetailServiceImpl")
+    /** 自定义退出登陆成功处理器 */
+    @Resource
+    private CustomLogoutSuccessHandler logoutSuccessHandler;
+
+    /** 用户信息 */
+    @Resource(name = "userDetailServiceConfig")
     private UserDetailsService userDetailsService;
 
     /**
@@ -70,6 +76,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin() // 配置表单登陆
                 .successHandler(authenticationSuccessHandler) // 成功处理器
                 .failureHandler(authenticationFailureHandler) // 失败处理器
-            .and().csrf().disable(); // 关闭csrf攻击
+            .and()
+                .logout() // 退出登陆成功处理器
+                .logoutSuccessHandler(logoutSuccessHandler)
+            .and()
+                .csrf().disable(); // 关闭csrf攻击
     }
 }

@@ -1,13 +1,12 @@
 package com.wang.oauth2.handler;
 
+import cn.hutool.core.map.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wang.oauth2.service.AuthService;
 import com.wang.until.base.BaseResult;
 import com.wang.until.tools.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
 import org.apache.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -18,7 +17,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -55,14 +53,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     /** 请求头前缀 */
     private static final String HEADER_TYPE = "Basic ";
 
-    /** 自定义认证 服务类：用户刷新令牌 */
-    @Resource
-    private AuthService authService;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         log.info("登陆成功：{}", authentication.getPrincipal());
 
         // 获得请求头 authorization
@@ -93,7 +87,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // 构建tokenRequest
         TokenRequest tokenRequest = new TokenRequest(
-                MapUtils.EMPTY_MAP, clientId,
+                MapUtil.empty(), clientId,
                 clientDetails.getScope(), "custom");
 
         // 构建oauth2Request
